@@ -5,6 +5,7 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     usemin = require('gulp-usemin'),
     imagemin = require('gulp-imagemin'),
+    cache = require('gulp-cache'),
     rename = require('gulp-rename'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
@@ -14,13 +15,20 @@ var gulp = require('gulp'),
     rev = require('gulp-rev'),
     browserSync = require('browser-sync'),
     del = require('del'),
-    foreach = require('gulp-foreach')
+    foreach = require('gulp-foreach'),
     ngannotate = require('gulp-ng-annotate');
 
 gulp.task('jshint', function() {
     return gulp.src('app/scripts/**/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish));
+});
+// Clean cache
+
+gulp.task('clear', function () {
+
+    return cache.clearAll();
+
 });
 
 // Clean
@@ -30,7 +38,7 @@ gulp.task('clean', function() {
 
 // Default task
 gulp.task('default', ['clean'], function() {
-    gulp.start('usemin', 'imagemin','copyfonts','copyHTMLTemplate', 'watch');
+    gulp.start('usemin', 'clear','imagemin','copyfonts','copyHTMLTemplate', 'watch');
 });
 
 gulp.task('usemin',['jshint'], function () {
